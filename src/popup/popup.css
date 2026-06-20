@@ -1,0 +1,254 @@
+/**
+ * Shorts Auto Next - Popup Styles
+ * 확장 프로그램 팝업 UI 스타일
+ */
+
+/* ===== 기본 리셋 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== 바디 ===== */
+body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e8eaed;
+    background: #202124;
+    min-width: 300px;
+}
+
+/* ===== 메인 컨테이너 ===== */
+.popup-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+/* ===== 헤더 ===== */
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: #3ea6ff;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* ===== 메인 컨텐츠 ===== */
+.popup-content {
+    padding: 20px;
+    flex: 1;
+}
+
+/* ===== 상태 섹션 ===== */
+.status-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    transition: all 0.2s ease;
+}
+
+.status-indicator.enabled {
+    background: rgba(62, 166, 255, 0.15);
+}
+
+.status-indicator.disabled {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.status-indicator.enabled .status-dot {
+    background: #3ea6ff;
+    box-shadow: 0 0 8px rgba(62, 166, 255, 0.6);
+}
+
+.status-indicator.disabled .status-dot {
+    background: #5f6368;
+}
+
+.status-text {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ===== 토글 섹션 ===== */
+.toggle-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toggle-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    cursor: pointer;
+}
+
+.toggle-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #e8eaed;
+}
+
+.toggle-description {
+    font-size: 12px;
+    color: #9aa0a6;
+    line-height: 1.4;
+}
+
+/* ===== 토글 스위치 ===== */
+.toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #5f6368;
+    border-radius: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: '';
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #e8eaed;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked+.toggle-slider {
+    background-color: #3ea6ff;
+}
+
+.toggle-switch input:checked+.toggle-slider::before {
+    transform: translateX(24px);
+    background-color: #ffffff;
+}
+
+.toggle-switch input:focus+.toggle-slider {
+    box-shadow: 0 0 0 2px rgba(62, 166, 255, 0.4);
+}
+
+/* ===== 푸터 ===== */
+.popup-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.version {
+    font-size: 11px;
+    color: #5f6368;
+}
+
+.feedback-link {
+    font-size: 12px;
+    color: #8ab4f8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.feedback-link:hover {
+    color: #aecbfa;
+    text-decoration: underline;
+}
+
+/* ===== 호버 효과 ===== */
+.toggle-section:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ===== 애니메이션 ===== */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.status-indicator.enabled .status-dot {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===== 모션 감소 ===== */
+@media (prefers-reduced-motion: reduce) {
+
+    .toggle-slider,
+    .toggle-slider::before,
+    .status-indicator,
+    .status-dot {
+        transition: none;
+    }
+
+    .status-indicator.enabled .status-dot {
+        animation: none;
+    }
+}

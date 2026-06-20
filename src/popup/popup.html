@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts Auto Next</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- 헤더 -->
+    <header class="popup-header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+        </svg>
+        <span class="logo-text">Shorts Auto Next</span>
+      </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="popup-content">
+      <!-- 상태 표시 -->
+      <div class="status-section">
+        <div class="status-indicator" id="statusIndicator">
+          <span class="status-dot"></span>
+          <span class="status-text" id="statusText">자동재생 켜짐</span>
+        </div>
+      </div>
+
+      <!-- 토글 스위치 -->
+      <div class="toggle-section">
+        <label class="toggle-label" for="autoPlayToggle">
+          <span class="toggle-title">자동재생</span>
+          <span class="toggle-description">쇼츠 영상이 끝나면 다음 영상으로 자동 이동</span>
+        </label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="autoPlayToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="popup-footer">
+      <span class="version" id="version">v1.0.0</span>
+      <a href="https://github.com/yourusername/shorts-auto-next" target="_blank" class="feedback-link">
+        피드백 보내기 →
+      </a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

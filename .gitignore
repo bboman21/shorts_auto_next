@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# 배포 패키지
+*.zip
+
+# 의존성/빌드 산출물
+node_modules/
+
+# 로그/임시 파일
+*.log
+*.tmp
+
+# Claude Code 로컬 설정
+.claude/

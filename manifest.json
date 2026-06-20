@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Shorts Auto Next - YouTube Shorts Auto Play",
+  "version": "1.0.0",
+  "description": "유튜브 쇼츠 영상이 끝나면 자동으로 다음 영상을 재생합니다",
+  
+  "permissions": [
+    "storage"
+  ],
+  
+  "host_permissions": [
+    "https://www.youtube.com/*"
+  ],
+  
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/shorts/*"],
+      "js": [
+        "src/content/autoplay.js",
+        "src/content/ui.js",
+        "src/content/content.js"
+      ],
+      "css": ["src/styles/floating-ui.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "48": "assets/icons/icon-48.png",
+      "128": "assets/icons/icon-128.png"
+    }
+  },
+  
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "48": "assets/icons/icon-48.png",
+    "128": "assets/icons/icon-128.png"
+  }
+}
