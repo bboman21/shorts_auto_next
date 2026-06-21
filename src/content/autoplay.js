@@ -164,38 +164,57 @@ class NextVideoNavigator {
 
     /**
      * 방법 1: 유튜브 네비게이션 버튼 클릭
+     *
+     * 유튜브 쇼츠 DOM은 자주 바뀌므로 "구조 기반 → 다국어 aria-label → 제너릭"
+     * 순서로 폴백을 시도한다. 가장 안정적인(언어 무관) 선택자를 먼저 둔다.
      */
     async tryClickNavigationButton() {
-        // 다양한 선택자 시도 (유튜브 DOM 구조는 변경될 수 있음)
         const selectors = [
-            // 영어
-            '[aria-label="Next video"]',
-            'button[aria-label="Next video"]',
-            // 한국어
-            '[aria-label="다음 동영상"]',
-            'button[aria-label="다음 동영상"]',
-            // 클래스 기반
+            // 1순위: 구조/ID 기반 (언어와 무관해 가장 안정적)
             '#navigation-button-down button',
+            '#navigation-button-down ytd-button-renderer',
+            'ytd-shorts #navigation-button-down button',
+            '.navigation-button-down button',
             '.navigation-button-down',
-            // 데이터 속성 기반
+            // 2순위: aria-label 부분 매칭 (대소문자 무시 → 다국어/표현 변화 대응)
+            'button[aria-label*="다음" i]',
+            'button[aria-label*="next" i]',
+            '[aria-label*="다음 동영상"]',
+            '[aria-label*="Next video" i]',
+            // 3순위: 데이터 속성 / 제너릭 폴백
             '[data-action="navigate-down"]',
-            // 제너릭
+            'ytd-shorts [id*="navigation-button-down"] button',
             'ytd-shorts [id*="navigation"] button:last-child'
         ];
 
         for (const selector of selectors) {
             try {
-                const button = document.querySelector(selector);
-                if (button && button.offsetParent !== null) { // 화면에 보이는지 확인
+                const el = document.querySelector(selector);
+                if (!el) continue;
+
+                // 선택자가 컨테이너를 가리킬 수 있으므로 실제 클릭 가능한 button을 추출
+                const button = el.tagName === 'BUTTON' ? el : (el.querySelector('button') || el);
+
+                if (button && this.isClickable(button)) {
                     button.click();
                     return true;
                 }
             } catch (e) {
-                // 선택자 오류 무시
+                // 잘못된 선택자/접근 오류는 무시하고 다음 폴백으로
             }
         }
 
         return false;
+    }
+
+    /**
+     * 요소가 실제로 화면에 보이고 클릭 가능한지 확인
+     */
+    isClickable(el) {
+        if (!el || el.disabled) return false;
+        if (el.offsetParent === null) return false; // display:none 등 숨김 처리
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
     }
 
     /**
@@ -317,24 +336,15 @@ class VideoObserver {
 
     /**
      * 비디오 요소 찾기
+     *
+     * 쇼츠는 여러 개의 reel 슬라이드를 DOM에 유지하므로 단순히 첫 번째 video를
+     * 잡으면 이전/다음 슬라이드의 비디오에 잘못 연결될 수 있다.
+     * → "활성 슬라이드 → 화면에 보이는 재생 중 비디오" 순으로 현재 영상을 찾는다.
      */
     checkForVideo() {
-        // 쇼츠 플레이어의 비디오 요소 찾기
-        const selectors = [
-            'ytd-shorts video',
-            '#shorts-player video',
-            'ytd-reel-video-renderer video',
-            '#shorts-container video'
-        ];
+        const video = this.findActiveVideo();
 
-        let video = null;
-
-        for (const selector of selectors) {
-            video = document.querySelector(selector);
-            if (video) break;
-        }
-
-        // 새로운 비디오가 발견되었을 때만 콜백 호출
+        // 새로운(현재 활성) 비디오가 발견되었을 때만 콜백 호출
         if (video && video !== this.currentVideo) {
             console.log('[ShortsAutoNext] New video element found');
             this.currentVideo = video;
@@ -343,6 +353,45 @@ class VideoObserver {
                 this.onVideoFound(video);
             }
         }
+    }
+
+    /**
+     * 현재 활성(화면에 보이는) 쇼츠 비디오를 반환
+     */
+    findActiveVideo() {
+        // 1순위: 유튜브가 활성 슬라이드에 부여하는 [is-active] 속성 기반
+        const activeSelectors = [
+            'ytd-reel-video-renderer[is-active] video',
+            'ytd-shorts [is-active] video',
+            '#shorts-player video'
+        ];
+        for (const selector of activeSelectors) {
+            const v = document.querySelector(selector);
+            if (v && this.isVisible(v)) return v;
+        }
+
+        // 2순위: 화면에 보이는 비디오 중 재생 중인 것을 우선 선택
+        const candidates = document.querySelectorAll(
+            'ytd-shorts video, #shorts-container video, ytd-reel-video-renderer video'
+        );
+        let fallback = null;
+        for (const v of candidates) {
+            if (!this.isVisible(v)) continue;
+            if (!v.paused && !v.ended) return v; // 재생 중인 비디오가 가장 확실
+            fallback = fallback || v;             // 없으면 보이는 첫 비디오
+        }
+        return fallback;
+    }
+
+    /**
+     * 요소가 뷰포트 안에 실제로 보이는지 확인
+     */
+    isVisible(el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return false;
+        // 요소의 세로 중심이 뷰포트 안에 있으면 활성 슬라이드로 간주
+        const centerY = rect.top + rect.height / 2;
+        return centerY > 0 && centerY < window.innerHeight;
     }
 
     /**

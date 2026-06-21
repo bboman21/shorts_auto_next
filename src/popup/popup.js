@@ -93,18 +93,8 @@ async function handleToggleChange() {
     updateUI();
     await saveSettings();
 
-    // 현재 탭에 메시지 전송 (Content Script에 알림)
-    try {
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (tab && tab.url && tab.url.includes('youtube.com/shorts')) {
-            await chrome.tabs.sendMessage(tab.id, {
-                type: 'SETTINGS_UPDATED',
-                payload: settings
-            });
-        }
-    } catch (error) {
-        // Content Script가 없는 페이지일 수 있음, 무시
-    }
+    // 설정은 chrome.storage.sync에 저장되며, content script는 storage.onChanged로
+    // 변경을 감지해 자동 반영하므로 별도의 탭 메시지 전송은 필요 없다.
 }
 
 /**

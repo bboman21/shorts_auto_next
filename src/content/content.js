@@ -17,7 +17,7 @@
 
     // 모듈 참조
     const { VideoEndDetector, NextVideoNavigator, VideoObserver } = window.ShortsAutoNext;
-    const { FloatingButton, Toast } = window.ShortsAutoNext;
+    const { FloatingButton } = window.ShortsAutoNext;
 
     // 인스턴스 생성
     const endDetector = new VideoEndDetector();

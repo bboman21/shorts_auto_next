@@ -39,14 +39,13 @@
 | 🎛️ **ON/OFF 토글** | 화면의 플로팅 버튼으로 간편하게 제어 |
 | 💾 **설정 저장** | 브라우저를 닫아도 설정 유지 |
 | 🌙 **다크 테마** | 유튜브와 조화로운 디자인 |
+| 🛡️ **DOM 변경 대비** | 활성 영상 감지 + 다국어/구조 기반 다중 폴백으로 유튜브 UI 변경에 견고 |
 
 ---
 
 ## 📸 스크린샷
 
-<p align="center">
-  <img src="assets/store/screenshot_1280x800.png" alt="Shorts Auto Next Screenshot" width="600">
-</p>
+> 📷 *스토어 등록용 스크린샷 준비 예정 — YouTube Shorts 화면 우측 하단에 플로팅 버튼이 표시됩니다.*
 
 ---
 
@@ -59,7 +58,7 @@
 
 1. **저장소 클론**
    ```bash
-   git clone https://github.com/yourusername/shorts-auto-next.git
+   git clone https://github.com/bboman21/shorts_auto_next.git
    ```
 
 2. **Chrome 확장 프로그램 페이지 접속**
@@ -70,7 +69,7 @@
 
 4. **확장 프로그램 로드**
    - "압축해제된 확장 프로그램을 로드합니다" 클릭
-   - 클론한 `shorts-auto-next` 폴더 선택
+   - 클론한 `shorts_auto_next` 폴더 선택
 
 5. **완료!** 🎉
 
@@ -109,14 +108,13 @@ shorts_auto_next/
 │   └── styles/
 │       └── floating-ui.css # 플로팅 버튼 스타일
 ├── assets/
-│   ├── icons/              # 확장 프로그램 아이콘
-│   └── store/              # 스토어 에셋
-├── docs/
-│   ├── PRD.md              # 제품 요구사항 문서
-│   ├── PRIVACY_POLICY.md   # 개인정보처리방침
-│   └── working_list.md     # 작업 기록
-└── scripts/
-    └── package.sh          # 패키징 스크립트
+│   └── icons/              # 확장 프로그램 아이콘 (16/48/128)
+└── docs/
+    ├── PRD.md              # 제품 요구사항 문서
+    ├── TECHNICAL_SPEC.md   # 기술 명세서
+    ├── STORE_LISTING.md    # 웹스토어 등록 정보
+    ├── PRIVACY_POLICY.md   # 개인정보처리방침
+    └── working_list.md     # 작업 기록
 ```
 
 ---

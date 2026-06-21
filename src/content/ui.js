@@ -188,36 +188,6 @@ class FloatingButton {
     }
 }
 
-/**
- * 토스트 알림 (간단한 피드백용)
- */
-class Toast {
-    static show(message, duration = 2000) {
-        // 기존 토스트 제거
-        const existing = document.querySelector('.shorts-auto-next-toast');
-        if (existing) existing.remove();
-
-        // 토스트 생성
-        const toast = document.createElement('div');
-        toast.className = 'shorts-auto-next-toast';
-        toast.textContent = message;
-
-        document.body.appendChild(toast);
-
-        // 애니메이션
-        requestAnimationFrame(() => {
-            toast.classList.add('show');
-        });
-
-        // 자동 제거
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, duration);
-    }
-}
-
 // 전역으로 내보내기
 window.ShortsAutoNext = window.ShortsAutoNext || {};
 window.ShortsAutoNext.FloatingButton = FloatingButton;
-window.ShortsAutoNext.Toast = Toast;
